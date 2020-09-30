@@ -23,13 +23,14 @@ final class MangaPress_Options
      */
     protected static $_default_options =  array(
         'basic' => array(
-            'latestcomic_page'  => 0,
-            'group_comics'      => 0,
-            'group_by_parent'   => 0,
-            'comicarchive_page' => 0,
-            'comicarchive_page_style'    => 'list',
-            'archive_order'     => 'DESC',
-            'archive_orderby'   => 'date',
+        	'enable_beta_features'    => 0,
+            'latestcomic_page'        => 0,
+            'group_comics'            => 0,
+            'group_by_parent'         => 0,
+            'comicarchive_page'       => 0,
+            'comicarchive_page_style' => 'list',
+            'archive_order'           => 'DESC',
+            'archive_orderby'         => 'date',
         ),
         'comic_page' => array(
             'generate_comic_page' => 0,
@@ -141,7 +142,7 @@ final class MangaPress_Options
         }
     }
 
-   /**
+    /**
      * Call-back for outputting settings fields (select drop-downs)
      * with custom values.
      *
@@ -211,7 +212,7 @@ final class MangaPress_Options
         return self::$_default_options;
     }
 
-   /**
+    /**
      * Helper function for creating default options fields.
      *
      * @return array
@@ -225,6 +226,15 @@ final class MangaPress_Options
          */
         $options = array(
             'basic' => array(
+	            'enable_beta_features'      => array(
+		            'id'          => 'enable-beta-features',
+		            'type'        => 'checkbox',
+		            'title'       => __('Enable beta features', MP_DOMAIN),
+		            'valid'       => 'boolean',
+		            'description' => __('Enable preview features from the next version. WARNING: Use at own risk. You must download the Manga+Press Beta plugin to use this feature.', MP_DOMAIN),
+		            'default'     => 1,
+		            'callback'    => array($this, 'settings_field_cb'),
+	            ),
                 'latestcomic_page'  => array(
                     'id'    => 'latest-comic-page',
                     'type'  => 'select',
@@ -363,7 +373,7 @@ final class MangaPress_Options
         return apply_filters('mangapress_options_fields', $options);
     }
 
-   /**
+    /**
      * Helper function for setting default options sections.
      *
      * @return array
@@ -435,6 +445,7 @@ final class MangaPress_Options
             //
             // Converting the values to their correct data-types should be enough for now...
             $new_options['basic'] = array(
+            	'enable_beta_features'    => intval($options['basic']['enable_beta_features']),
                 'archive_order'   => in_array($options['basic']['archive_order'], $archive_order_values)
                                         ? $options['basic']['archive_order']
                                         : $available_options['basic']['archive_order']['default'],
