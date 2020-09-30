@@ -229,9 +229,13 @@ final class MangaPress_Options
 	            'enable_beta_features'      => array(
 		            'id'          => 'enable-beta-features',
 		            'type'        => 'checkbox',
-		            'title'       => __('Enable beta features', MP_DOMAIN),
+		            'title'       => __('Enable Beta Features', MP_DOMAIN),
 		            'valid'       => 'boolean',
-		            'description' => __('Enable preview features from the next version. WARNING: Use at own risk. You must download the Manga+Press Beta plugin to use this feature.', MP_DOMAIN),
+		            'description' => __(
+		            	sprintf(
+		            		'Enable preview features from the next version. WARNING: Use at own risk. You must download the Feature Plugin of your choice to use this feature. Feature plugins are available [<a href="%s" target="_blank" rel="noopener">here</a>]',
+				            'https://manga-press.com/blog/category/beta-testing/'
+			            ), MP_DOMAIN),
 		            'default'     => 1,
 		            'callback'    => array($this, 'settings_field_cb'),
 	            ),
