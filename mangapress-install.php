@@ -73,7 +73,7 @@ class MangaPress_Install
 
         // Check for capability
         if ( !current_user_can('activate_plugins') ){
-            wp_die( __('Sorry, you do not have suffient permissions to activate this plugin.', MP_DOMAIN) );
+            wp_die( __('Sorry, you do not have sufficient permissions to activate this plugin.', MP_DOMAIN) );
         }
         
         // Get the capabilities for the administrator
@@ -84,10 +84,10 @@ class MangaPress_Install
             wp_die( __('Sorry, you must be an Administrator in order to use Manga+Press', MP_DOMAIN) );
         }
         
-        if ( version_compare ($wp_version, '3.0', '<=')) {
+        if ( version_compare ($wp_version, '5.0', '<=')) {
             wp_die(
-                  'Sorry, only WordPress 3.0 and later are supported.'
-                . ' Please upgrade to WordPress 3.0', 'Wrong Version'
+                  'Sorry, only WordPress 5.0 and later are supported.'
+                . ' Please upgrade to WordPress 5.0', 'Wrong Version'
             );
         }
 
