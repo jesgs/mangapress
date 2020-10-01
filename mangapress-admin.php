@@ -29,7 +29,16 @@ final class MangaPress_Admin
     {
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+	    add_action( 'wp_dashboard_setup', array($this, 'add_dashboard_widgets') );
     }
+
+	public function add_dashboard_widgets() {
+		wp_add_dashboard_widget('mangapress_news_widget', 'Manga+Press News and Updates', array($this, 'news_updates_widget'));
+	}
+
+	public function news_updates_widget() {
+		// @todo add news ticker from manga-press.com
+	}
 
     /**
      * Load our admin page
