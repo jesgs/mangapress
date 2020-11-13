@@ -33,11 +33,41 @@ final class MangaPress_Admin
     }
 
 	public function add_dashboard_widgets() {
-		wp_add_dashboard_widget('mangapress_news_widget', 'Manga+Press News and Updates', array($this, 'news_updates_widget'));
+		wp_add_dashboard_widget('mangapress_news_widget', __('Manga+Press Beta Testing News', 'mangapress'), array($this, 'news_updates_widget'));
 	}
 
 	public function news_updates_widget() {
-		// @todo add news ticker from manga-press.com
+		$html = get_transient('mangapress_ticker');
+		echo '<div class="wordpress-news hide-if-no-js">';
+		if ( ! empty( $html ) ) {
+			echo wp_kses_post( $html );
+		} else {
+			$url      = 'https://manga-press.com/wp-json/wp/v2/posts?categories=42';
+			$response = wp_remote_get( $url );
+			$body     = wp_remote_retrieve_body( $response );
+			$code     = wp_remote_retrieve_response_code( $response );
+
+			if ( 200 !== $code ) {
+				echo sprintf( '<div class="rss-widget"><ul><li>%s</li></ul></div>', __( 'Ticker down or no news', 'mangapress' ) );
+			} else {
+				$posts = json_decode( $body );
+				if ( ! empty( $posts ) ) {
+					$html .= '<div class="rss-widget"><ul>';
+					foreach ( $posts as $post ) {
+						$html .= sprintf(
+							'<li><a href="%s" rel="noopener" target="_blank">%s</a></li>',
+							esc_url( $post->link ),
+							esc_html( $post->title->rendered )
+						);
+					}
+					$html .= '</ul></div>';
+				}
+
+				set_transient( 'mangapress_ticker', $html, 86400 );
+			}
+		}
+
+		echo "</div>";
 	}
 
     /**
